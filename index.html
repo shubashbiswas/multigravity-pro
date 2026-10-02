@@ -1,0 +1,2064 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Multigravity Pro: Run multiple isolated Antigravity IDE profiles simultaneously with independent accounts, settings, and extensions. Full Antigravity 2.0 support.">
+  <meta name="keywords" content="Antigravity, Antigravity IDE, Multigravity, multi-account, developer profiles, profile manager">
+  <meta property="og:title" content="Multigravity Pro Documentation">
+  <meta property="og:description" content="Run multiple Antigravity IDE profiles simultaneously — each with its own accounts, settings, and extensions.">
+  <title>Multigravity Pro Documentation — Multi-Profile Manager for Antigravity IDE</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       CSS Variables & Themes
+       ========================================================================== */
+    :root {
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+      /* Dark Palette (Default) */
+      --bg-body: #090d16;
+      --bg-sidebar: #0d131f;
+      --bg-card: #121826;
+      --bg-card-hover: #182032;
+      --bg-elevated: #1a2236;
+      --bg-code: #070a10;
+      
+      --border-subtle: #1e293b;
+      --border-hover: #334155;
+      --border-accent: rgba(56, 189, 248, 0.35);
+
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --primary: #38bdf8;
+      --primary-hover: #0284c7;
+      --primary-glow: rgba(56, 189, 248, 0.15);
+      
+      --accent: #818cf8;
+      --success: #34d399;
+      --success-bg: rgba(52, 211, 153, 0.12);
+      --warning: #fbbf24;
+      --warning-bg: rgba(251, 191, 36, 0.12);
+      --danger: #f87171;
+      
+      --header-height: 64px;
+      --sidebar-width: 270px;
+      --toc-width: 230px;
+      
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-xl: 20px;
+      
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.5);
+      --shadow-glow: 0 0 30px rgba(56, 189, 248, 0.15);
+      
+      --transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="light"] {
+      --bg-body: #f8fafc;
+      --bg-sidebar: #f1f5f9;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f8fafc;
+      --bg-elevated: #e2e8f0;
+      --bg-code: #0f172a;
+
+      --border-subtle: #e2e8f0;
+      --border-hover: #cbd5e1;
+      --border-accent: rgba(2, 132, 199, 0.3);
+
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --primary-glow: rgba(2, 132, 199, 0.1);
+
+      --accent: #6366f1;
+      --success: #059669;
+      --success-bg: rgba(5, 150, 105, 0.1);
+      --warning: #d97706;
+      --warning-bg: rgba(217, 119, 6, 0.1);
+      --danger: #dc2626;
+
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --shadow-glow: 0 0 30px rgba(2, 132, 199, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--header-height) + 24px);
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.65;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      transition: background-color var(--transition), color var(--transition);
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* ==========================================================================
+       Header (Top Navbar)
+       ========================================================================== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--header-height);
+      background: rgba(9, 13, 22, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background var(--transition), border-color var(--transition);
+    }
+    [data-theme="light"] .site-header {
+      background: rgba(248, 250, 252, 0.85);
+    }
+
+    .header-inner {
+      width: 100%;
+      height: 100%;
+      padding: 0 clamp(16px, 3vw, 40px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .sidebar-toggle-btn {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      border-radius: var(--radius-sm);
+      width: 36px;
+      height: 36px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.15em;
+      color: var(--text-main);
+      text-decoration: none !important;
+    }
+
+    .brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      object-fit: cover;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .brand-badge {
+      font-size: 0.7em;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header-center {
+      flex: 1;
+      max-width: 440px;
+      position: relative;
+    }
+
+    .header-search {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 8px 14px 8px 36px;
+      color: var(--text-main);
+      font-size: 0.88em;
+      outline: none;
+      transition: all var(--transition);
+    }
+    .header-search:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+    .header-search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      font-size: 13px;
+      pointer-events: none;
+    }
+    .search-shortcut-badge {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.72em;
+      color: var(--text-dim);
+      background: var(--bg-elevated);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
+      pointer-events: none;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      list-style: none;
+    }
+
+    .header-links a {
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 0.9em;
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .header-links a:hover {
+      color: var(--text-main);
+    }
+
+    .btn-beginner-guide {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(129, 140, 248, 0.12));
+      border: 1px solid var(--border-accent);
+      color: var(--primary) !important;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85em;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--transition);
+    }
+    .btn-beginner-guide:hover {
+      background: var(--primary);
+      color: #fff !important;
+      border-color: var(--primary);
+      text-decoration: none !important;
+      transform: translateY(-1px);
+    }
+
+    .theme-toggle-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-size: 15px;
+    }
+    .theme-toggle-btn:hover {
+      color: var(--text-main);
+      border-color: var(--border-hover);
+    }
+
+    /* ==========================================================================
+       Layout (3-Column Layout: Sidebar + Main + TOC)
+       ========================================================================== */
+    .docs-layout {
+      display: flex;
+      width: 100%;
+      min-height: calc(100vh - var(--header-height));
+    }
+
+    /* --- Left Sidebar --- */
+    .docs-sidebar {
+      width: var(--sidebar-width);
+      flex-shrink: 0;
+      position: sticky;
+      top: var(--header-height);
+      height: calc(100vh - var(--header-height));
+      overflow-y: auto;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-subtle);
+      padding: 24px 16px 40px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-subtle) transparent;
+      transition: transform var(--transition);
+    }
+
+    .sidebar-group {
+      margin-bottom: 24px;
+    }
+
+    .sidebar-group-title {
+      font-size: 0.72em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      padding: 0 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+    }
+
+    .sidebar-item a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 12px;
+      font-size: 0.88em;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: all var(--transition);
+    }
+
+    .sidebar-item a:hover {
+      color: var(--text-main);
+      background: var(--bg-card);
+    }
+
+    .sidebar-item a.active {
+      color: var(--primary);
+      background: var(--primary-glow);
+      font-weight: 600;
+      border-left: 2px solid var(--primary);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .sidebar-item-badge {
+      margin-left: auto;
+      font-size: 0.7em;
+      background: var(--bg-elevated);
+      color: var(--text-dim);
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-family: var(--font-mono);
+    }
+
+    /* --- Central Main Content --- */
+    .docs-content {
+      flex: 1;
+      min-width: 0;
+      padding: 40px clamp(20px, 4vw, 56px) 100px;
+    }
+
+    /* --- Right On-Page Table of Contents --- */
+    .docs-toc {
+      width: var(--toc-width);
+      flex-shrink: 0;
+      position: sticky;
+      top: var(--header-height);
+      height: calc(100vh - var(--header-height));
+      overflow-y: auto;
+      padding: 32px 20px 40px;
+      border-left: 1px solid var(--border-subtle);
+      font-size: 0.82em;
+    }
+
+    .toc-title {
+      font-size: 0.75em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+
+    .toc-menu {
+      list-style: none;
+    }
+
+    .toc-item a {
+      display: block;
+      color: var(--text-dim);
+      padding: 5px 0;
+      line-height: 1.4;
+      text-decoration: none;
+      transition: color var(--transition);
+      border-left: 2px solid transparent;
+      padding-left: 10px;
+      margin-left: -10px;
+    }
+
+    .toc-item a:hover {
+      color: var(--text-main);
+    }
+
+    .toc-item a.active {
+      color: var(--primary);
+      border-left-color: var(--primary);
+      font-weight: 600;
+    }
+
+    .toc-community-box {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .toc-community-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.9em;
+      margin-bottom: 8px;
+      text-decoration: none;
+    }
+    .toc-community-link:hover {
+      color: var(--primary);
+    }
+
+    /* ==========================================================================
+       Hero Section
+       ========================================================================== */
+    .hero-banner {
+      position: relative;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.05) 0%, rgba(129, 140, 248, 0.05) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: clamp(32px, 5vw, 56px);
+      margin-bottom: 40px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-banner::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      font-size: 0.8em;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: clamp(2.2em, 4vw, 3.2em);
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--text-main) 30%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-lead {
+      font-size: 1.2em;
+      color: var(--text-muted);
+      max-width: 800px;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+    .hero-lead strong {
+      color: var(--text-main);
+    }
+
+    .hero-quick-install {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .quick-snippet-box {
+      background: var(--bg-code);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 10px 16px;
+      font-family: var(--font-mono);
+      font-size: 0.88em;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #38bdf8;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .os-badge-pill {
+      background: var(--bg-elevated);
+      color: var(--text-muted);
+      font-size: 0.75em;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: var(--font-sans);
+      font-weight: 600;
+    }
+
+    /* Beginner Nudge Card */
+    .beginner-callout {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(129, 140, 248, 0.08));
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-lg);
+      padding: 22px 28px;
+      margin: 36px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .beginner-callout-text h3 {
+      font-size: 1.08em;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .beginner-callout-text p {
+      font-size: 0.9em;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .btn-beginner-action {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff !important;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      font-size: 0.9em;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+      white-space: nowrap;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .btn-beginner-action:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5);
+      text-decoration: none;
+    }
+
+    /* ==========================================================================
+       Documentation Sections & Typography
+       ========================================================================== */
+    section {
+      margin-bottom: 56px;
+    }
+
+    h2 {
+      font-size: 1.65em;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      margin-top: 48px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h3 {
+      font-size: 1.2em;
+      font-weight: 600;
+      margin-top: 28px;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    p {
+      margin: 12px 0;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    p strong, li strong {
+      color: var(--text-main);
+    }
+
+    /* Feature Grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin: 24px 0 32px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      transition: all var(--transition);
+      position: relative;
+    }
+
+    .feature-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .feature-icon-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: var(--primary-glow);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4em;
+      margin-bottom: 16px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .feature-card h4 {
+      font-size: 1.1em;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    .feature-card p {
+      font-size: 0.9em;
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       Code Blocks & Interactive Terminals
+       ========================================================================== */
+    .code-block {
+      position: relative;
+      margin: 18px 0;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-code);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.78em;
+      color: var(--text-dim);
+    }
+
+    .code-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .code-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .code-dot.red { background: #ef4444; }
+    .code-dot.yellow { background: #f59e0b; }
+    .code-dot.green { background: #10b981; }
+
+    .code-block pre {
+      padding: 16px 20px;
+      padding-right: 60px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 0;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 36px;
+      right: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      opacity: 0.9;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .copy-btn:hover {
+      background: var(--bg-elevated);
+      color: var(--text-main);
+      border-color: var(--text-muted);
+      opacity: 1;
+    }
+
+    .copy-btn.copied {
+      color: var(--success) !important;
+      border-color: var(--success) !important;
+      background: var(--success-bg);
+    }
+
+    /* Tabs */
+    .tab-container {
+      margin: 20px 0;
+    }
+
+    .tab-buttons {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 14px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+      padding: 10px 18px;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 0.9em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 20px 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      box-shadow: var(--shadow-sm);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92em;
+      text-align: left;
+    }
+
+    th {
+      background: var(--bg-elevated);
+      color: var(--text-main);
+      font-weight: 600;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.85em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: var(--bg-card-hover);
+    }
+
+    td code, p code, li code {
+      font-family: var(--font-mono);
+      background: rgba(56, 189, 248, 0.08);
+      color: var(--primary);
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 0.88em;
+      border: 1px solid rgba(56, 189, 248, 0.15);
+    }
+
+    /* Terminal Simulator */
+    .terminal {
+      background: #06090e;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 18px 22px;
+      margin: 18px 0;
+      font-family: var(--font-mono);
+      font-size: 0.86em;
+      line-height: 1.65;
+      color: #e2e8f0;
+      overflow-x: auto;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.6);
+    }
+
+    .terminal .t-dim { color: #64748b; }
+    .terminal .t-blue { color: #38bdf8; font-weight: 600; }
+    .terminal .t-green { color: #34d399; font-weight: 600; }
+    .terminal .t-yellow { color: #fbbf24; }
+    .terminal .t-purple { color: #c084fc; }
+
+    /* Callouts & Alerts */
+    .alert {
+      border-left: 4px solid var(--primary);
+      background: var(--primary-glow);
+      padding: 16px 20px;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 20px 0;
+      font-size: 0.92em;
+    }
+    .alert-note {
+      border-left-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.08);
+    }
+    .alert-warning {
+      border-left-color: #f59e0b;
+      background: rgba(245, 158, 11, 0.08);
+    }
+    .alert strong {
+      color: var(--text-main);
+    }
+
+    /* Interactive Command Filter */
+    .cmd-filter-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin: 18px 0 20px;
+    }
+
+    .cmd-search-input {
+      flex: 1;
+      min-width: 260px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 0.95em;
+      outline: none;
+      transition: all var(--transition);
+    }
+    .cmd-search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    .cmd-category-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .cmd-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.82em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .cmd-pill:hover {
+      border-color: var(--border-hover);
+      color: var(--text-main);
+    }
+    .cmd-pill.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    /* Lists */
+    ul, ol {
+      padding-left: 24px;
+      margin: 12px 0;
+      color: var(--text-muted);
+    }
+    li {
+      margin: 6px 0;
+    }
+
+    /* Footer */
+    footer.site-footer {
+      margin-top: 80px;
+      padding: 36px 0;
+      border-top: 1px solid var(--border-subtle);
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.88em;
+    }
+    footer.site-footer a {
+      color: var(--text-muted);
+    }
+    footer.site-footer a:hover {
+      color: var(--primary);
+    }
+
+    /* ==========================================================================
+       Responsive Media Queries
+       ========================================================================== */
+    @media (max-width: 1240px) {
+      .docs-toc {
+        display: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .sidebar-toggle-btn {
+        display: flex;
+      }
+      .docs-sidebar {
+        position: fixed;
+        left: 0;
+        top: var(--header-height);
+        bottom: 0;
+        z-index: 99;
+        transform: translateX(-100%);
+        box-shadow: var(--shadow-md);
+      }
+      .docs-sidebar.open {
+        transform: translateX(0);
+      }
+      .header-center {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .header-links li:not(:last-child) {
+        display: none;
+      }
+      .docs-content {
+        padding: 24px 16px 60px;
+      }
+      .code-block pre {
+        padding-right: 16px;
+      }
+      .copy-btn {
+        top: 8px;
+        right: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==========================================================================
+       Header Navigation
+       ========================================================================== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <button class="sidebar-toggle-btn" id="sidebar-toggle" aria-label="Toggle Sidebar Navigation">
+          <span>☰</span>
+        </button>
+
+        <a href="#" class="brand" id="brand-link">
+          <img src="assets/multigravity-logo.jpg" alt="Multigravity Logo">
+          <span>Multigravity Pro</span>
+          <span class="brand-badge">v2.0</span>
+        </a>
+      </div>
+
+      <div class="header-center">
+        <span class="header-search-icon">🔍</span>
+        <input type="text" class="header-search" id="quick-search" placeholder="Search commands, flags, guides..." aria-label="Quick Search">
+        <span class="search-shortcut-badge">Ctrl+K</span>
+      </div>
+
+      <div class="header-right">
+        <ul class="header-links">
+          <li><a href="#features" id="nav-features">Features</a></li>
+          <li><a href="#install" id="nav-install">Install</a></li>
+          <li><a href="#quickstart" id="nav-quickstart">Quickstart</a></li>
+          <li><a href="#commands" id="nav-commands">Commands</a></li>
+          <li><a href="#architecture" id="nav-architecture">Architecture</a></li>
+          <li>
+            <a href="start.html" class="btn-beginner-guide" id="nav-beginner">
+              <span>🌱</span> Beginner's Guide
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/shubashbiswas/multigravity-pro" target="_blank" rel="noopener" title="GitHub Repository">
+              <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" style="display:block;">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+              </svg>
+            </a>
+          </li>
+        </ul>
+
+        <button class="theme-toggle-btn" id="theme-toggle" title="Toggle Dark/Light Mode" aria-label="Toggle Dark/Light Mode">
+          <span id="theme-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       Layout (Sidebar + Main + TOC)
+       ========================================================================== -->
+  <div class="docs-layout">
+
+    <!-- Left Sticky Sidebar -->
+    <aside class="docs-sidebar" id="docs-sidebar">
+      <div class="sidebar-group">
+        <div class="sidebar-group-title"><span>🚀</span> Getting Started</div>
+        <ul class="sidebar-menu">
+          <li class="sidebar-item"><a href="#overview" class="active">Overview</a></li>
+          <li class="sidebar-item"><a href="#features">Key Features</a></li>
+          <li class="sidebar-item"><a href="#install">Installation <span class="sidebar-item-badge">CLI</span></a></li>
+          <li class="sidebar-item"><a href="#quickstart">Quickstart (3 Steps)</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title"><span>⚡</span> Core Concepts</div>
+        <ul class="sidebar-menu">
+          <li class="sidebar-item"><a href="#profile-types">Profile Types <span class="sidebar-item-badge">Auth-Only</span></a></li>
+          <li class="sidebar-item"><a href="#templates">Templates Blueprint</a></li>
+          <li class="sidebar-item"><a href="#status">Status & Monitoring</a></li>
+          <li class="sidebar-item"><a href="#stats">Storage Breakdown</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title"><span>🛠️</span> Operations</div>
+        <ul class="sidebar-menu">
+          <li class="sidebar-item"><a href="#export-import">Export & Import</a></li>
+          <li class="sidebar-item"><a href="#management">Clone, Rename & Delete</a></li>
+          <li class="sidebar-item"><a href="#doctor">Environment Doctor</a></li>
+          <li class="sidebar-item"><a href="#update">Self-Update</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title"><span>📖</span> Reference</div>
+        <ul class="sidebar-menu">
+          <li class="sidebar-item"><a href="#commands">All Commands Table</a></li>
+          <li class="sidebar-item"><a href="#architecture">File System Architecture</a></li>
+          <li class="sidebar-item"><a href="#env-vars">Environment Variables</a></li>
+          <li class="sidebar-item"><a href="#naming-rules">Naming Rules</a></li>
+          <li class="sidebar-item"><a href="#uninstallation">Uninstallation</a></li>
+          <li class="sidebar-item"><a href="#whats-new">What's New in Pro</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Center Main Content -->
+    <main class="docs-content">
+
+      <!-- Hero Banner -->
+      <section class="hero-banner" id="overview">
+        <div class="hero-pill">
+          <span>✨</span> Antigravity IDE 2.0 Native Support
+        </div>
+
+        <h1>Multigravity Pro</h1>
+
+        <p class="hero-lead">
+          Run multiple <strong>Antigravity IDE profiles simultaneously</strong> — each with its own isolated accounts, settings, keystrokes, and extensions.
+        </p>
+
+        <div class="hero-quick-install">
+          <div class="quick-snippet-box">
+            <span class="os-badge-pill">macOS / Linux</span>
+            <code>curl -fsSL https://raw.githubusercontent.com/shubashbiswas/multigravity-pro/main/install.sh | bash</code>
+          </div>
+          <div class="quick-snippet-box">
+            <span class="os-badge-pill">Windows</span>
+            <code>irm https://raw.githubusercontent.com/shubashbiswas/multigravity-pro/main/install.ps1 | iex</code>
+          </div>
+        </div>
+      </section>
+
+      <!-- Beginner Callout Banner -->
+      <aside class="beginner-callout" aria-label="Beginner Walkthrough">
+        <div class="beginner-callout-text">
+          <h3>🌱 Brand new to terminals or Antigravity IDE?</h3>
+          <p>Explore our visual, step-by-step beginner guide with annotated walkthroughs and terminal simulations.</p>
+        </div>
+        <a href="start.html" class="btn-beginner-action" id="hero-beginner-btn">Open Beginner's Guide →</a>
+      </aside>
+
+      <!-- Key Features -->
+      <section id="features">
+        <h2><span>⚡</span> Key Features</h2>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon-badge">🚀</div>
+            <h4>Simultaneous Profiles</h4>
+            <p>Run separate work, personal, and client profiles simultaneously in detached processes with zero session conflicts.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-badge">🎯</div>
+            <h4>Antigravity IDE 2.0 Ready</h4>
+            <p>Native detection of <code>Antigravity-IDE.exe</code>, standard app directories, and dual extensions folders.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-badge">🪶</div>
+            <h4>Auth-Only Profiles</h4>
+            <p>Share 99% of your disk space via symlinks while keeping client authentication and logins fully sandboxed (~2 MB).</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-badge">📋</div>
+            <h4>Profile Templates</h4>
+            <p>Save configured environments as golden blueprints and stamp out fresh profiles in seconds with <code>--from</code>.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-badge">📦</div>
+            <h4>Export & Import</h4>
+            <p>Pack entire profiles into <code>.zip</code> or <code>.tar.gz</code> archives to migrate across devices or share with colleagues.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-badge">🖥️</div>
+            <h4>Native OS Launchers</h4>
+            <p>Generates native macOS <code>.app</code> bundles, Windows Start Menu shortcuts, and Linux <code>.desktop</code> launchers automatically.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Installation -->
+      <section id="install">
+        <h2><span>📥</span> Installation</h2>
+        <p>Install Multigravity Pro with a single command on your operating system:</p>
+
+        <div class="tab-container">
+          <div class="tab-buttons" role="tablist">
+            <button class="tab-btn active" onclick="switchTab(event, 'tab-macos')" role="tab" id="tab-btn-macos">🍎 macOS & Linux</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tab-windows')" role="tab" id="tab-btn-windows">🪟 Windows (PowerShell)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tab-manual')" role="tab" id="tab-btn-manual">⚙️ Manual Setup</button>
+          </div>
+
+          <!-- macOS & Linux Tab -->
+          <div class="tab-content active" id="tab-macos" role="tabpanel">
+            <p>Open your terminal and paste:</p>
+            <div class="code-block">
+              <div class="code-header">
+                <div class="code-dots"><div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div></div>
+                <span>bash / zsh</span>
+              </div>
+              <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/shubashbiswas/multigravity-pro/main/install.sh)"</code></pre>
+              <button class="copy-btn" onclick="copyCode(this)" id="copy-install-sh">Copy</button>
+            </div>
+            <p class="t-dim">Installs to <code>/usr/local/bin</code> (or <code>~/.local/bin</code>) and sets up the app icon on macOS.</p>
+          </div>
+
+          <!-- Windows Tab -->
+          <div class="tab-content" id="tab-windows" role="tabpanel">
+            <p>Open <strong>PowerShell</strong> (Windows PowerShell 5.1 or PowerShell Core 7+) and paste:</p>
+            <div class="code-block">
+              <div class="code-header">
+                <div class="code-dots"><div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div></div>
+                <span>powershell</span>
+              </div>
+              <pre><code>irm https://raw.githubusercontent.com/shubashbiswas/multigravity-pro/main/install.ps1 | iex</code></pre>
+              <button class="copy-btn" onclick="copyCode(this)" id="copy-install-ps">Copy</button>
+            </div>
+            <p class="t-dim">Installs <code>multigravity.ps1</code> and <code>multigravity.cmd</code> to <code>%USERPROFILE%\.local\bin</code> and updates your User PATH.</p>
+          </div>
+
+          <!-- Manual Tab -->
+          <div class="tab-content" id="tab-manual" role="tabpanel">
+            <p>Clone the repository and place the script in any directory on your PATH:</p>
+            <div class="code-block">
+              <div class="code-header">
+                <div class="code-dots"><div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div></div>
+                <span>git & terminal</span>
+              </div>
+              <pre><code>git clone https://github.com/shubashbiswas/multigravity-pro.git
+# macOS / Linux:
+cp multigravity-pro/multigravity /usr/local/bin/multigravity && chmod +x /usr/local/bin/multigravity
+
+# Windows:
+# Copy multigravity.ps1 to your preferred folder in PATH</code></pre>
+              <button class="copy-btn" onclick="copyCode(this)" id="copy-install-manual">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <h3 id="doctor">Verify Your Installation</h3>
+        <p>Run the built-in diagnostic tool to ensure everything is configured properly:</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div></div>
+            <span>terminal</span>
+          </div>
+          <pre><code>multigravity doctor</code></pre>
+          <button class="copy-btn" onclick="copyCode(this)" id="copy-doctor-cmd">Copy</button>
+        </div>
+
+        <div class="terminal">
+          <span class="t-dim">Checking multigravity environment...</span><br>
+          &nbsp;&nbsp;<span class="t-green">[OK]</span> Antigravity: Found at C:\Users\user\AppData\Local\Programs\Antigravity IDE\Antigravity-IDE.exe<br>
+          &nbsp;&nbsp;<span class="t-green">[OK]</span> Global Binary: C:\Users\user\.local\bin\multigravity.cmd<br>
+          &nbsp;&nbsp;<span class="t-green">[OK]</span> Profile storage: C:\Users\user\AntigravityProfiles (writable)<br><br>
+          <span class="t-blue">Your environment looks perfect!</span>
+        </div>
+      </section>
+
+      <!-- Quickstart -->
+      <section id="quickstart">
+        <h2><span>🚀</span> Getting Started</h2>
+
+        <h3>1. Create a Profile</h3>
+        <p>Give your profile a clear name (e.g. <code>work</code>, <code>personal</code>, or a client code):</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div></div>
+            <span>terminal</span>
+          </div>
+          <pre><code>multigravity new work
+multigravity new personal</code></pre>
+          <button class="copy-btn" onclick="copyCode(this)" id="copy-new-cmd">Copy</button>
+        </div>
+
+        <p>This automatically creates a clickable desktop launcher:</p>
+        <ul>
+          <li><strong>macOS:</strong> <code>~/Applications/Multigravity &lt;name&gt;.app</code></li>
+          <li><strong>Windows:</strong> <strong>Start Menu</strong> shortcut (<code>Multigravity &lt;name&gt;</code>)</li>
+          <li><strong>Linux:</strong> <code>~/.local/share/applications/multigravity-&lt;name&gt;.desktop</code></li>
+        </ul>
+
+        <h3>2. Launch a Profile</h3>
+        <p>Launch the profile simply by using its name:</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div></div>
+            <span>terminal</span>
+          </div>
+          <pre><code>multigravity work</code></pre>
+          <button class="copy-btn" onclick="copyCode(this)" id="copy-launch-cmd">Copy</button>
+        </div>
+
+        <p>Forward normal Antigravity parameters through the command line:</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div></div>
+            <span>terminal</span>
+          </div>
+          <pre><code># Open current folder
+multigravity work .
+
+# Open in a new window
+multigravity work ~/projects/webapp --new-window
+
+# Open a specific file
+multigravity work src/app.ts</code></pre>
+          <button class="copy-btn" onclick="copyCode(this)" id="copy-forward-args">Copy</button>
+        </div>
+
+        <h3>3. Enable Shell Tab Completion</h3>
+        <p>Get instant autocomplete for all commands and profile names in your shell:</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div></div>
+            <span>terminal</span>
+          </div>
+          <pre><code>multigravity completion</code></pre>
+          <button class="copy-btn" onclick="copyCode(this)" id="copy-completion-cmd">Copy</button>
+        </div>
+      </section>
+
+      <!-- Profile Types: Full vs Auth-Only -->
+      <section id="profile-types">
+        <h2><span>🪶</span> Profile Types: Full vs. Auth-Only</h2>
+        <p>
+          In most daily workflows, developers want separate accounts (e.g., Google or GitHub credentials) but don't want to reinstall the same extensions or configure identical editor settings. 
+          <strong>Auth-only profiles</strong> use symlinks to share configuration while keeping login tokens fully isolated.
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div></div>
+            <span>terminal</span>
+          </div>
+          <pre><code>multigravity new client-a --auth-only
+multigravity new client-b --auth-only</code></pre>
+          <button class="copy-btn" onclick="copyCode(this)" id="copy-authonly-cmd">Copy</button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Full Profile (<code>multigravity new &lt;name&gt;</code>)</th>
+                <th>Auth-Only Profile (<code>--auth-only</code>)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Account / Login</strong></td>
+                <td>Completely isolated sandbox</td>
+                <td>Completely isolated sandbox</td>
+              </tr>
+              <tr>
+                <td><strong>Extensions</strong></td>
+                <td>Separate copy in profile</td>
+                <td>Shared via symlink with primary install</td>
+              </tr>
+              <tr>
+                <td><strong>Editor Settings & Keybindings</strong></td>
+                <td>Separate copy in profile</td>
+                <td>Shared via symlink with primary install</td>
+              </tr>
+              <tr>
+                <td><strong>Disk Footprint</strong></td>
+                <td>~500 MB+ per profile</td>
+                <td>~1 – 2 MB per profile (99% savings)</td>
+              </tr>
+              <tr>
+                <td><strong>Best Suited For</strong></td>
+                <td>Different tech stacks (e.g. Mobile vs Backend)</td>
+                <td>Multiple accounts with identical setup</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="alert alert-note">
+          <strong>Windows Note:</strong> Symlink creation in auth-only profiles works best with <strong>Windows Developer Mode</strong> enabled or PowerShell launched with standard developer privileges.
+        </div>
+      </section>
+
+      <!-- Templates -->
+      <section id="templates">
+        <h2><span>📋</span> Profile Templates</h2>
+        <p>Configure a golden environment once (themes, extensions, settings), and stamp out fresh profiles in seconds:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div></div>
+            <span>terminal</span>
+          </div>
+          <pre><code># 1. Save an existing configured profile as a blueprint
+multigravity template save work python-dev
+
+# 2. View all saved templates
+multigravity template list
+
+# 3. Create a brand new profile from that template
+multigravity new client-apollo --from python-dev
+
+# 4. Remove a template when finished
+multigravity template delete python-dev</code></pre>
+          <button class="copy-btn" onclick="copyCode(this)" id="copy-template-cmd">Copy</button>
+        </div>
+      </section>
+
+      <!-- Status & Process Monitoring -->
+      <section id="status">
+        <h2><span>📊</span> Status & Process Monitoring</h2>
+        <p>Inspect running Antigravity processes, profile types, last active times, and storage size at a glance:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div></div>
+            <span>terminal</span>
+          </div>
+          <pre><code>multigravity status</code></pre>
+          <button class="copy-btn" onclick="copyCode(this)" id="copy-status-cmd">Copy</button>
+        </div>
+
+        <div class="terminal">
+          <span class="t-dim">PROFILE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;STATUS &nbsp; &nbsp; TYPE &nbsp; &nbsp; &nbsp; &nbsp; LAST USED &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;SIZE</span><br>
+          <span class="t-dim">------- &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;------ &nbsp; &nbsp; ---- &nbsp; &nbsp; &nbsp; &nbsp; --------- &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;----</span><br>
+          <span class="t-blue">client-a</span> &nbsp; &nbsp; &nbsp; &nbsp; <span class="t-green">running</span> &nbsp; &nbsp;auth-only &nbsp; &nbsp;2026-10-02 14:30 &nbsp; &nbsp; 2 MB<br>
+          <span class="t-blue">client-b</span> &nbsp; &nbsp; &nbsp; &nbsp; <span class="t-yellow">stopped</span> &nbsp; &nbsp;auth-only &nbsp; &nbsp;2026-10-01 09:15 &nbsp; &nbsp; 1 MB<br>
+          <span class="t-blue">personal</span> &nbsp; &nbsp; &nbsp; &nbsp; <span class="t-yellow">stopped</span> &nbsp; &nbsp;full &nbsp; &nbsp; &nbsp; &nbsp; 2026-10-02 20:00 &nbsp; &nbsp; 487 MB<br>
+          <span class="t-blue">work</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="t-green">running</span> &nbsp; &nbsp;full &nbsp; &nbsp; &nbsp; &nbsp; 2026-10-03 00:15 &nbsp; &nbsp; 523 MB
+        </div>
+
+        <h3 id="stats">Storage Breakdown (<code>stats</code>)</h3>
+        <p>View storage usage and extension counts for all profiles:</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div></div>
+            <span>terminal</span>
+          </div>
+          <pre><code>multigravity stats</code></pre>
+          <button class="copy-btn" onclick="copyCode(this)" id="copy-stats-cmd">Copy</button>
+        </div>
+
+        <div class="terminal">
+          <span class="t-dim">Profile Storage Usage:</span><br>
+          <span class="t-dim">PROFILE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;SIZE &nbsp; &nbsp; &nbsp; EXTENSIONS</span><br>
+          <span class="t-dim">------- &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;---- &nbsp; &nbsp; &nbsp; ----------</span><br>
+          <span class="t-blue">work</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 523.4 MB &nbsp; 18<br>
+          <span class="t-blue">personal</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 487.1 MB &nbsp; 14<br>
+          <span class="t-blue">client-a</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2.1 MB &nbsp; &nbsp; 0 (shared)<br><br>
+          <span class="t-purple">Total usage: 1.01 GB</span>
+        </div>
+      </section>
+
+      <!-- Export & Import -->
+      <section id="export-import">
+        <h2><span>📦</span> Export & Import</h2>
+        <p>Transfer setups between computers, create backups, or share standard team profiles:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div></div>
+            <span>terminal</span>
+          </div>
+          <pre><code># Export on macOS / Linux (.tar.gz archive)
+multigravity export work ~/Desktop/work.tar.gz
+
+# Export on Windows (.zip archive)
+multigravity export work C:\backup\work.zip
+
+# Import (automatically infers profile name from the archive filename)
+multigravity import work.tar.gz
+
+# Import with a custom profile name
+multigravity import C:\backup\work.zip client-apollo</code></pre>
+          <button class="copy-btn" onclick="copyCode(this)" id="copy-export-cmd">Copy</button>
+        </div>
+      </section>
+
+      <!-- Profile Management -->
+      <section id="management">
+        <h2><span>🔧</span> Profile Management: Clone, Rename, Delete</h2>
+
+        <h3>Clone an Existing Profile</h3>
+        <p>Duplicate a profile's complete state into a new isolated environment:</p>
+        <div class="code-block">
+          <pre><code>multigravity clone work work-backup</code></pre>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+
+        <h3>Rename a Profile</h3>
+        <p>Safely rename a profile and automatically re-link its desktop/Start Menu shortcut:</p>
+        <div class="code-block">
+          <pre><code>multigravity rename work-backup work-v2</code></pre>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+
+        <h3>Delete a Profile</h3>
+        <p>Remove a profile and its sandboxed data. Multigravity prompts for safety confirmation:</p>
+        <div class="code-block">
+          <pre><code>multigravity delete test-profile</code></pre>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+
+        <h3 id="update">Self-Update (<code>update</code>)</h3>
+        <p>Upgrade Multigravity to the newest build directly from GitHub:</p>
+        <div class="code-block">
+          <pre><code>multigravity update</code></pre>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+      </section>
+
+      <!-- All Commands Reference Table -->
+      <section id="commands">
+        <h2><span>📖</span> All Commands Reference</h2>
+        <p>Search or filter the complete list of available CLI commands:</p>
+
+        <div class="cmd-filter-wrap">
+          <input type="text" id="cmd-search" class="cmd-search-input" placeholder="Type to filter commands (e.g. 'status', 'clone', 'template')..." oninput="filterCommands()">
+          <div class="cmd-category-pills">
+            <button class="cmd-pill active" onclick="filterCategory('all', this)">All</button>
+            <button class="cmd-pill" onclick="filterCategory('core', this)">Core</button>
+            <button class="cmd-pill" onclick="filterCategory('templates', this)">Templates</button>
+            <button class="cmd-pill" onclick="filterCategory('system', this)">System</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table id="cmd-table">
+            <thead>
+              <tr>
+                <th style="width: 32%;">Command Syntax</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-cat="core">
+                <td><code>multigravity new &lt;name&gt;</code></td>
+                <td>Create a full isolated profile and generate desktop/Start Menu launcher.</td>
+              </tr>
+              <tr data-cat="core">
+                <td><code>multigravity new &lt;name&gt; --auth-only</code></td>
+                <td>Create an auth-only profile with shared extensions & settings via symlinks (~2 MB).</td>
+              </tr>
+              <tr data-cat="templates">
+                <td><code>multigravity new &lt;name&gt; --from &lt;tpl&gt;</code></td>
+                <td>Create a new profile seeded from a saved template blueprint.</td>
+              </tr>
+              <tr data-cat="core">
+                <td><code>multigravity &lt;name&gt; [args...]</code></td>
+                <td>Launch Antigravity in that profile. Forwards extra arguments (e.g. <code>.</code>, <code>--new-window</code>).</td>
+              </tr>
+              <tr data-cat="core">
+                <td><code>multigravity list [--raw]</code></td>
+                <td>List all existing profile names. <code>--raw</code> outputs names only for scripting.</td>
+              </tr>
+              <tr data-cat="core">
+                <td><code>multigravity status</code></td>
+                <td>Real-time dashboard displaying running status, type, last used date, and disk size.</td>
+              </tr>
+              <tr data-cat="core">
+                <td><code>multigravity stats</code></td>
+                <td>Display total storage footprint and installed extension counts per profile.</td>
+              </tr>
+              <tr data-cat="core">
+                <td><code>multigravity clone &lt;src&gt; &lt;dest&gt;</code></td>
+                <td>Duplicate an existing profile and its launchers.</td>
+              </tr>
+              <tr data-cat="core">
+                <td><code>multigravity rename &lt;old&gt; &lt;new&gt;</code></td>
+                <td>Rename a profile and update desktop/Start Menu launchers.</td>
+              </tr>
+              <tr data-cat="core">
+                <td><code>multigravity delete &lt;name&gt;</code></td>
+                <td>Safely delete a profile and its shortcuts (prompts for confirmation).</td>
+              </tr>
+              <tr data-cat="templates">
+                <td><code>multigravity template save &lt;prof&gt; &lt;tpl&gt;</code></td>
+                <td>Save a configured profile as a reusable blueprint.</td>
+              </tr>
+              <tr data-cat="templates">
+                <td><code>multigravity template list</code></td>
+                <td>List all saved profile templates and their sizes.</td>
+              </tr>
+              <tr data-cat="templates">
+                <td><code>multigravity template delete &lt;name&gt;</code></td>
+                <td>Delete a saved template.</td>
+              </tr>
+              <tr data-cat="system">
+                <td><code>multigravity export &lt;name&gt; [path]</code></td>
+                <td>Export a profile to an archive (<code>.zip</code> on Windows, <code>.tar.gz</code> on Unix).</td>
+              </tr>
+              <tr data-cat="system">
+                <td><code>multigravity import &lt;archive&gt; [name]</code></td>
+                <td>Import a profile from an archive and register desktop shortcuts.</td>
+              </tr>
+              <tr data-cat="system">
+                <td><code>multigravity doctor</code></td>
+                <td>Inspect Antigravity binary discovery, PATH configuration, and permissions.</td>
+              </tr>
+              <tr data-cat="system">
+                <td><code>multigravity update</code></td>
+                <td>Download and install the latest release directly from GitHub.</td>
+              </tr>
+              <tr data-cat="system">
+                <td><code>multigravity completion [shell]</code></td>
+                <td>Display or generate shell tab completion hooks (bash, zsh, powershell).</td>
+              </tr>
+              <tr data-cat="system">
+                <td><code>multigravity help</code></td>
+                <td>Show built-in usage and command options.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Architecture & File Paths -->
+      <section id="architecture">
+        <h2><span>🏛️</span> Architecture & File System Layout</h2>
+        <p>
+          Multigravity stores each profile in an independent base directory (defaults to <code>~/AntigravityProfiles</code> or <code>%USERPROFILE%\AntigravityProfiles</code>).
+        </p>
+
+        <div class="tab-container">
+          <div class="tab-buttons" role="tablist">
+            <button class="tab-btn active" onclick="switchArchTab(event, 'arch-win')">🪟 Windows Paths</button>
+            <button class="tab-btn" onclick="switchArchTab(event, 'arch-mac')">🍎 macOS Paths</button>
+            <button class="tab-btn" onclick="switchArchTab(event, 'arch-linux')">🐧 Linux Paths</button>
+          </div>
+
+          <div class="tab-content active" id="arch-win">
+            <ul>
+              <li><strong>Base Directory:</strong> <code>%USERPROFILE%\AntigravityProfiles\&lt;name&gt;</code></li>
+              <li><strong>User Data:</strong> <code>AppData\Roaming\Antigravity</code> &amp; <code>AppData\Roaming\Antigravity IDE</code></li>
+              <li><strong>Extensions:</strong> <code>.antigravity\extensions</code> &amp; <code>.antigravity-ide\extensions</code> (Antigravity IDE 2.0 dual support)</li>
+              <li><strong>Start Menu:</strong> <code>%APPDATA%\Microsoft\Windows\Start Menu\Programs\Multigravity &lt;name&gt;.lnk</code></li>
+            </ul>
+          </div>
+
+          <div class="tab-content" id="arch-mac">
+            <ul>
+              <li><strong>Base Directory:</strong> <code>~/AntigravityProfiles/&lt;name&gt;</code></li>
+              <li><strong>User Data:</strong> <code>Library/Application Support/Antigravity</code></li>
+              <li><strong>Keychains:</strong> Symlinked to <code>~/Library/Keychains</code> for secure credential storage</li>
+              <li><strong>Extensions:</strong> <code>.antigravity/extensions</code></li>
+              <li><strong>Desktop Launcher:</strong> <code>~/Applications/Multigravity &lt;name&gt;.app</code></li>
+            </ul>
+          </div>
+
+          <div class="tab-content" id="arch-linux">
+            <ul>
+              <li><strong>Base Directory:</strong> <code>~/AntigravityProfiles/&lt;name&gt;</code></li>
+              <li><strong>User Data:</strong> <code>.config/Antigravity</code>, <code>.cache</code>, <code>.local/share</code></li>
+              <li><strong>Extensions:</strong> <code>.antigravity/extensions</code></li>
+              <li><strong>Desktop Entry:</strong> <code>~/.local/share/applications/multigravity-&lt;name&gt;.desktop</code></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 id="env-vars">Environment Variables</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Variable</th>
+                <th>Description</th>
+                <th>Default</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>MULTIGRAVITY_HOME</code></td>
+                <td>Custom storage directory for all profiles and templates.</td>
+                <td><code>~/AntigravityProfiles</code> or <code>%USERPROFILE%\AntigravityProfiles</code></td>
+              </tr>
+              <tr>
+                <td><code>MULTIGRAVITY_APP</code></td>
+                <td>Explicit path to the Antigravity or Antigravity IDE executable/app bundle.</td>
+                <td>Auto-detected standard paths</td>
+              </tr>
+              <tr>
+                <td><code>MULTIGRAVITY_PLATFORM</code></td>
+                <td>Force platform type (<code>darwin</code>, <code>linux</code>). Used for testing.</td>
+                <td>Auto-detected from OS</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Naming Rules & Uninstallation -->
+      <section id="naming-rules">
+        <h2><span>🛡️</span> Profile Naming Rules</h2>
+        <ul>
+          <li>Characters allowed: <strong>Letters, numbers, and hyphens</strong> (<code>^[a-zA-Z0-9][a-zA-Z0-9-]*$</code>).</li>
+          <li>Must start with an alphanumeric character.</li>
+          <li><strong>Valid:</strong> <code>work</code>, <code>client-a</code>, <code>test-10</code></li>
+          <li><strong>Invalid:</strong> <code>-bad</code>, <code>my_profile</code> (no underscores), <code>has spaces</code></li>
+        </ul>
+      </section>
+
+      <section id="uninstallation">
+        <h2><span>🗑️</span> Uninstallation Guide</h2>
+        <p>To completely remove Multigravity from your system:</p>
+
+        <div class="tab-container">
+          <div class="tab-buttons">
+            <button class="tab-btn active" onclick="switchUninstallTab(event, 'un-win')">Windows</button>
+            <button class="tab-btn" onclick="switchUninstallTab(event, 'un-unix')">macOS / Linux</button>
+          </div>
+
+          <div class="tab-content active" id="un-win">
+            <div class="code-block">
+              <pre><code># 1. Remove binary scripts
+Remove-Item "$env:USERPROFILE\.local\bin\multigravity.*" -Force
+
+# 2. (Optional) Purge all profiles and templates
+Remove-Item -Recurse -Force "$env:USERPROFILE\AntigravityProfiles"
+
+# 3. Clean up Start Menu shortcuts
+Get-ChildItem "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Multigravity *.lnk" | Remove-Item -Force</code></pre>
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+          </div>
+
+          <div class="tab-content" id="un-unix">
+            <div class="code-block">
+              <pre><code># 1. Remove binary and icon
+sudo rm -f /usr/local/bin/multigravity /usr/local/bin/icon.icns
+# Or if installed in ~/.local/bin:
+rm -f ~/.local/bin/multigravity ~/.local/bin/icon.icns
+
+# 2. (Optional) Remove profiles data
+rm -rf ~/AntigravityProfiles
+
+# 3. Remove launchers
+# macOS:
+rm -rf ~/Applications/Multigravity\ *.app
+# Linux:
+rm -f ~/.local/share/applications/multigravity-*.desktop ~/.local/share/multigravity/launchers/*.sh</code></pre>
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- What's New in Pro -->
+      <section id="whats-new">
+        <h2><span>✨</span> What's New in Multigravity Pro</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Command</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Antigravity IDE 2.0</strong></td>
+                <td>Automatic</td>
+                <td>Detects new <code>Antigravity-IDE.exe</code>, AppData paths, and modern extension folders.</td>
+              </tr>
+              <tr>
+                <td><strong>Auth-Only Profiles</strong></td>
+                <td><code>new &lt;name&gt; --auth-only</code></td>
+                <td>Shares extensions & settings via symlinks; isolates login accounts. ~2 MB disk usage.</td>
+              </tr>
+              <tr>
+                <td><strong>Profile Templates</strong></td>
+                <td><code>template save &lt;p&gt; &lt;t&gt;</code></td>
+                <td>Save configured environments as blueprints and spawn identical profiles via <code>--from</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>Status Dashboard</strong></td>
+                <td><code>status</code></td>
+                <td>Live overview showing running state, type, last used timestamps, and disk sizes.</td>
+              </tr>
+              <tr>
+                <td><strong>Storage Stats</strong></td>
+                <td><code>stats</code></td>
+                <td>Visual breakdown of storage usage and extension counts per profile.</td>
+              </tr>
+              <tr>
+                <td><strong>Export & Import</strong></td>
+                <td><code>export</code> / <code>import</code></td>
+                <td>Pack profiles into portable <code>.zip</code> or <code>.tar.gz</code> archives.</td>
+              </tr>
+              <tr>
+                <td><strong>Hardened Windows Engine</strong></td>
+                <td>All commands</td>
+                <td>Re-engineered PowerShell execution with stream isolation, Start Menu shortcut management, and 40+ bugfixes.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Site Footer -->
+      <footer class="site-footer">
+        <p>
+          Multigravity Pro is built on top of <a href="https://github.com/sujitagarwal/multigravity-cli" target="_blank" rel="noopener">multigravity-cli</a> by Sujit Agarwal.<br>
+          Maintained by <a href="https://github.com/shubashbiswas" target="_blank" rel="noopener">Shubash Biswas</a>. Released under the <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">MIT License</a>.
+        </p>
+      </footer>
+
+    </main>
+
+    <!-- Right Sticky Table of Contents -->
+    <aside class="docs-toc">
+      <div class="toc-title">On This Page</div>
+      <ul class="toc-menu">
+        <li class="toc-item"><a href="#overview">Overview</a></li>
+        <li class="toc-item"><a href="#features">Key Features</a></li>
+        <li class="toc-item"><a href="#install">Installation</a></li>
+        <li class="toc-item"><a href="#doctor">Environment Doctor</a></li>
+        <li class="toc-item"><a href="#quickstart">Getting Started</a></li>
+        <li class="toc-item"><a href="#profile-types">Profile Types</a></li>
+        <li class="toc-item"><a href="#templates">Templates</a></li>
+        <li class="toc-item"><a href="#status">Status & Monitoring</a></li>
+        <li class="toc-item"><a href="#stats">Storage Stats</a></li>
+        <li class="toc-item"><a href="#export-import">Export & Import</a></li>
+        <li class="toc-item"><a href="#management">Management</a></li>
+        <li class="toc-item"><a href="#commands">Commands Table</a></li>
+        <li class="toc-item"><a href="#architecture">Architecture</a></li>
+        <li class="toc-item"><a href="#env-vars">Environment Variables</a></li>
+        <li class="toc-item"><a href="#naming-rules">Naming Rules</a></li>
+        <li class="toc-item"><a href="#uninstallation">Uninstallation</a></li>
+        <li class="toc-item"><a href="#whats-new">What's New</a></li>
+      </ul>
+
+      <div class="toc-community-box">
+        <a href="https://github.com/shubashbiswas/multigravity-pro" target="_blank" rel="noopener" class="toc-community-link">
+          <span>⭐</span> Star on GitHub
+        </a>
+        <a href="https://github.com/shubashbiswas/multigravity-pro/issues" target="_blank" rel="noopener" class="toc-community-link">
+          <span>💬</span> Report an Issue
+        </a>
+        <a href="start.html" class="toc-community-link">
+          <span>🌱</span> Beginner's Guide
+        </a>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- ==========================================================================
+       Interactive Logic
+       ========================================================================== */ -->
+  <script>
+    // Copy code button handler
+    function copyCode(btn) {
+      const codeBlock = btn.closest('.code-block');
+      const code = codeBlock.querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const origText = btn.textContent;
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = origText;
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Tab switcher
+    function switchTab(e, tabId) {
+      const parent = e.target.closest('.tab-container');
+      parent.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      parent.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+      e.currentTarget.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    function switchArchTab(e, tabId) { switchTab(e, tabId); }
+    function switchUninstallTab(e, tabId) { switchTab(e, tabId); }
+
+    // Search filter for command table
+    function filterCommands() {
+      const input = document.getElementById('cmd-search').value.toLowerCase();
+      const rows = document.querySelectorAll('#cmd-table tbody tr');
+
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        if (text.includes(input)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+
+    function filterCategory(cat, btn) {
+      document.querySelectorAll('.cmd-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+
+      const rows = document.querySelectorAll('#cmd-table tbody tr');
+      rows.forEach(row => {
+        if (cat === 'all' || row.getAttribute('data-cat') === cat) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+
+    // Quick search shortcut (Ctrl+K or /)
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey && e.key === 'k') || (e.key === '/' && document.activeElement.tagName !== 'INPUT')) {
+        e.preventDefault();
+        const searchInput = document.getElementById('quick-search') || document.getElementById('cmd-search');
+        if (searchInput) {
+          searchInput.focus();
+          searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    });
+
+    const quickSearchInput = document.getElementById('quick-search');
+    if (quickSearchInput) {
+      quickSearchInput.addEventListener('input', (e) => {
+        const target = document.getElementById('cmd-search');
+        if (target) {
+          target.value = e.target.value;
+          filterCommands();
+        }
+      });
+    }
+
+    // Mobile sidebar drawer
+    const toggleBtn = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('docs-sidebar');
+    if (toggleBtn && sidebar) {
+      toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+          sidebar.classList.remove('open');
+        }
+      });
+    }
+
+    // Theme toggle (Dark / Light)
+    const themeBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+
+    function initTheme() {
+      const saved = localStorage.getItem('multigravity_theme');
+      if (saved === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        themeIcon.textContent = '☀️';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeIcon.textContent = '🌙';
+      }
+    }
+
+    themeBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      if (current === 'light') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('multigravity_theme', 'dark');
+        themeIcon.textContent = '🌙';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('multigravity_theme', 'light');
+        themeIcon.textContent = '☀️';
+      }
+    });
+
+    // Scrollspy for TOC and Sidebar
+    const observerOptions = {
+      root: null,
+      rootMargin: '-80px 0px -70% 0px',
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (id) {
+            document.querySelectorAll('.toc-item a, .sidebar-item a').forEach(a => {
+              if (a.getAttribute('href') === '#' + id) {
+                a.classList.add('active');
+              } else {
+                a.classList.remove('active');
+              }
+            });
+          }
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('section[id], h3[id]').forEach(section => {
+      observer.observe(section);
+    });
+
+    initTheme();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Beginner's Guide to Multigravity Pro and Antigravity IDE: Build apps with AI. No experience needed. Complete step-by-step setup in 5 minutes.">
+  <title>Get Started — Multigravity Pro Beginner's Guide</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       CSS Variables & Themes
+       ========================================================================== */
+    :root {
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+      /* Dark Theme (Default) */
+      --bg-body: #090d16;
+      --bg-card: #121826;
+      --bg-card-hover: #182032;
+      --bg-elevated: #1a2236;
+      --bg-code: #070a10;
+      
+      --border-subtle: #1e293b;
+      --border-hover: #334155;
+      --border-accent: rgba(56, 189, 248, 0.35);
+
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --primary: #38bdf8;
+      --primary-hover: #0284c7;
+      --primary-glow: rgba(56, 189, 248, 0.15);
+      
+      --accent: #818cf8;
+      --success: #34d399;
+      --success-bg: rgba(52, 211, 153, 0.12);
+      --warning: #fbbf24;
+      --warning-bg: rgba(251, 191, 36, 0.12);
+      
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.5);
+      --shadow-glow: 0 0 30px rgba(56, 189, 248, 0.15);
+      
+      --transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="light"] {
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f1f5f9;
+      --bg-elevated: #e2e8f0;
+      --bg-code: #0f172a;
+
+      --border-subtle: #e2e8f0;
+      --border-hover: #cbd5e1;
+      --border-accent: rgba(2, 132, 199, 0.3);
+
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --primary-glow: rgba(2, 132, 199, 0.1);
+
+      --accent: #6366f1;
+      --success: #059669;
+      --success-bg: rgba(5, 150, 105, 0.1);
+      --warning: #d97706;
+      --warning-bg: rgba(217, 119, 6, 0.1);
+
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --shadow-glow: 0 0 30px rgba(2, 132, 199, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.65;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color var(--transition), color var(--transition);
+      overflow-x: hidden;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* ==========================================================================
+       Header / Navigation
+       ========================================================================== */
+    .nav {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: 64px;
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0 clamp(20px, 4vw, 56px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    [data-theme="light"] .nav {
+      background: rgba(248, 250, 252, 0.88);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.1em;
+      color: var(--text-main);
+      text-decoration: none !important;
+    }
+
+    .nav-brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      object-fit: cover;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .nav-brand-badge {
+      font-size: 0.72em;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 0.9em;
+      transition: color var(--transition);
+    }
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+
+    .btn-dev-docs {
+      background: var(--bg-elevated);
+      color: var(--text-main) !important;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      font-weight: 600;
+      font-size: 0.85em;
+      transition: all var(--transition);
+    }
+    .btn-dev-docs:hover {
+      border-color: var(--primary);
+      background: var(--primary-glow);
+    }
+
+    .theme-toggle-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-size: 15px;
+    }
+    .theme-toggle-btn:hover {
+      color: var(--text-main);
+      border-color: var(--border-hover);
+    }
+
+    /* ==========================================================================
+       Hero Section
+       ========================================================================== */
+    .hero {
+      position: relative;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.05) 0%, rgba(129, 140, 248, 0.05) 100%);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: clamp(64px, 8vw, 100px) clamp(20px, 4vw, 56px) 64px;
+      text-align: center;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 0.78em;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--primary);
+      background: var(--primary-glow);
+      border: 1px solid var(--border-accent);
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4em, 5vw, 3.5em);
+      font-weight: 800;
+      line-height: 1.18;
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--text-main) 30%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 1.2em;
+      color: var(--text-muted);
+      max-width: 760px;
+      margin: 0 auto 36px;
+      line-height: 1.65;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff !important;
+      padding: 12px 32px;
+      border-radius: var(--radius-md);
+      font-size: 1em;
+      font-weight: 600;
+      box-shadow: 0 4px 18px rgba(2, 132, 199, 0.4);
+      transition: all var(--transition);
+      text-decoration: none !important;
+    }
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(2, 132, 199, 0.55);
+    }
+
+    /* ==========================================================================
+       Sections & Explainer Cards
+       ========================================================================== */
+    section {
+      width: 100%;
+      margin: 0 auto;
+      padding: 72px clamp(20px, 4vw, 56px);
+      box-sizing: border-box;
+    }
+
+    .section-label {
+      display: block;
+      font-size: 0.75em;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: clamp(1.6em, 3vw, 2em);
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.25;
+      color: var(--text-main);
+    }
+
+    .section-sub {
+      color: var(--text-muted);
+      font-size: 1.05em;
+      max-width: 800px;
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border-subtle);
+      margin: 0;
+    }
+
+    .gray-bg {
+      background: var(--bg-card);
+    }
+
+    /* Explainer Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--bg-body);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: all var(--transition);
+      position: relative;
+    }
+    .card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-icon {
+      font-size: 1.8em;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+
+    .card h3 {
+      font-size: 1.2em;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.94em;
+      line-height: 1.65;
+    }
+
+    /* ==========================================================================
+       Interactive Terminal Demo
+       ========================================================================== */
+    .demo-section {
+      background: var(--bg-body);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 72px clamp(20px, 4vw, 56px);
+      text-align: center;
+      width: 100%;
+    }
+
+    .demo-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .terminal-window {
+      background: #06090e;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      text-align: left;
+      box-shadow: var(--shadow-md);
+    }
+
+    .terminal-header {
+      background: #0d131f;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .terminal-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+    .terminal-dot.dot-red { background: #ef4444; }
+    .terminal-dot.dot-yellow { background: #f59e0b; }
+    .terminal-dot.dot-green { background: #10b981; }
+
+    .terminal-title {
+      flex: 1;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.8em;
+      font-family: var(--font-mono);
+    }
+
+    .terminal-body {
+      padding: 20px 24px;
+      min-height: 280px;
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      line-height: 1.7;
+      color: #e2e8f0;
+      overflow-y: auto;
+    }
+
+    .terminal-line {
+      margin-bottom: 4px;
+    }
+
+    .terminal-prompt {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .terminal-command {
+      color: #f8fafc;
+    }
+
+    .terminal-output {
+      color: var(--text-muted);
+    }
+
+    .terminal-success {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .terminal-info {
+      color: var(--primary);
+    }
+
+    .terminal-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 16px;
+      background: #f8fafc;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .demo-steps {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .demo-step-pill {
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      transition: all 0.2s;
+    }
+
+    .demo-step-pill.active {
+      color: var(--primary);
+      border-color: var(--primary);
+      background: var(--primary-glow);
+    }
+
+    .demo-step-pill.done {
+      color: var(--success);
+      border-color: var(--success);
+      background: var(--success-bg);
+    }
+
+    .demo-narration {
+      margin-top: 18px;
+      color: var(--text-main);
+      font-size: 1em;
+      font-weight: 500;
+      min-height: 28px;
+    }
+
+    .demo-controls {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .demo-btn {
+      background: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+      padding: 9px 22px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: inherit;
+    }
+
+    .demo-btn:hover {
+      background: var(--bg-elevated);
+      border-color: var(--border-hover);
+    }
+
+    .demo-btn.primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .demo-btn.primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .demo-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ==========================================================================
+       Setup Stepper (Step 0 to Step 3)
+       ========================================================================== */
+    .step-list {
+      position: relative;
+      margin-top: 32px;
+    }
+
+    .step {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 48px;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .step::before {
+      content: '';
+      position: absolute;
+      left: 21px;
+      top: 48px;
+      bottom: -48px;
+      width: 2px;
+      background: var(--border-subtle);
+    }
+    .step:last-child::before {
+      display: none;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      color: var(--primary);
+      border: 2px solid var(--border-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1em;
+      box-shadow: 0 0 16px var(--primary-glow);
+      z-index: 2;
+    }
+
+    .step-body {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: border-color var(--transition);
+    }
+    .step-body:hover {
+      border-color: var(--border-hover);
+    }
+
+    .step-title {
+      font-size: 1.2em;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    .step-text {
+      color: var(--text-muted);
+      font-size: 0.96em;
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+
+    .step-note {
+      background: rgba(56, 189, 248, 0.06);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      font-size: 0.9em;
+      color: var(--text-main);
+      margin-top: 14px;
+      line-height: 1.6;
+    }
+
+    /* OS Switcher Tabs */
+    .os-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 18px;
+      background: var(--bg-body);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      width: fit-content;
+    }
+
+    .os-tab {
+      padding: 8px 18px;
+      font-size: 0.88em;
+      font-weight: 600;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      border-radius: var(--radius-sm);
+      transition: all var(--transition);
+      font-family: inherit;
+    }
+
+    .os-tab.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .os-tab:hover:not(.active) {
+      color: var(--text-main);
+    }
+
+    .os-content {
+      display: none;
+    }
+
+    .os-content.active {
+      display: block;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+
+    /* Code blocks */
+    .code-block {
+      position: relative;
+      margin: 14px 0;
+      background: var(--bg-code);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .code-block pre {
+      padding: 16px 20px;
+      padding-right: 56px;
+      overflow-x: auto;
+      font-size: 0.9em;
+      line-height: 1.6;
+      font-family: var(--font-mono);
+      color: #e2e8f0;
+      margin: 0;
+    }
+
+    .code-block code {
+      font-family: inherit;
+    }
+
+    .code-block .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 5px 12px;
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--text-muted);
+      transition: all var(--transition);
+      font-weight: 500;
+    }
+
+    .code-block .copy-btn:hover {
+      background: var(--bg-elevated);
+      color: var(--text-main);
+    }
+
+    .code-block .copy-btn.copied {
+      color: var(--success);
+      border-color: var(--success);
+      background: var(--success-bg);
+    }
+
+    /* Inline Code */
+    p code, li code, td code {
+      font-family: var(--font-mono);
+      background: rgba(56, 189, 248, 0.08);
+      color: var(--primary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.88em;
+      border: 1px solid rgba(56, 189, 248, 0.15);
+    }
+
+    /* Jargon Tooltips */
+    .jargon {
+      border-bottom: 1px dashed var(--primary);
+      cursor: help;
+      position: relative;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .jargon-tip {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-md);
+      color: var(--text-main);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85em;
+      line-height: 1.5;
+      width: 260px;
+      text-align: left;
+      z-index: 50;
+      font-weight: 400;
+    }
+
+    .jargon-tip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--bg-elevated);
+    }
+
+    .jargon:hover .jargon-tip {
+      display: block;
+    }
+
+    /* Success Section */
+    .success-section {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      text-align: center;
+      padding: 64px clamp(20px, 4vw, 56px);
+      width: 100%;
+    }
+
+    .success-section .section-title {
+      color: var(--success);
+    }
+
+    .success-list {
+      list-style: none;
+      padding: 0;
+      max-width: 440px;
+      margin: 24px auto 0;
+      text-align: left;
+    }
+
+    .success-list li {
+      padding: 8px 0;
+      font-size: 1em;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .check {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--success);
+      color: #064e3b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      transition: all var(--transition);
+    }
+    .feature-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+    }
+
+    .feature-card h4 {
+      font-size: 1.05em;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .feature-card p {
+      font-size: 0.9em;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* FAQ */
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: border-color var(--transition);
+    }
+    .faq-item:hover {
+      border-color: var(--border-hover);
+    }
+
+    .faq-q {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 18px 24px;
+      font-size: 1em;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+    }
+
+    .faq-arrow {
+      font-size: 0.8em;
+      color: var(--text-dim);
+      transition: transform var(--transition);
+    }
+
+    .faq-item.open .faq-arrow {
+      transform: rotate(180deg);
+      color: var(--primary);
+    }
+
+    .faq-a {
+      display: none;
+      padding: 0 24px 20px;
+      font-size: 0.95em;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .faq-item.open .faq-a {
+      display: block;
+    }
+
+    /* Glossary Table */
+    table.glossary {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--bg-card);
+    }
+
+    table.glossary td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.92em;
+    }
+
+    table.glossary tr:last-child td {
+      border-bottom: none;
+    }
+
+    table.glossary td:first-child {
+      font-weight: 700;
+      color: var(--primary);
+      width: 22%;
+      font-family: var(--font-mono);
+      font-size: 0.88em;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-subtle);
+      padding: 48px clamp(20px, 4vw, 56px);
+      text-align: center;
+      width: 100%;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      font-size: 0.9em;
+      font-weight: 500;
+    }
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .footer-credit {
+      color: var(--text-dim);
+      font-size: 0.85em;
+    }
+
+    @media (max-width: 768px) {
+      .step {
+        gap: 16px;
+      }
+      .step::before {
+        left: 17px;
+      }
+      .step-num {
+        width: 36px;
+        height: 36px;
+        font-size: 0.95em;
+      }
+      .nav-links a:not(.btn-dev-docs) {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/multigravity-logo.jpg" alt="Multigravity Logo">
+      <span>Multigravity Pro</span>
+      <span class="nav-brand-badge">Beginner</span>
+    </a>
+    <div class="nav-links">
+      <a href="#setup">Setup</a>
+      <a href="#demo">Live Demo</a>
+      <a href="#faq">FAQ</a>
+      <a href="index.html" class="btn-dev-docs">Developer Docs →</a>
+      <button class="theme-toggle-btn" id="theme-toggle" title="Toggle Theme" aria-label="Toggle Theme">
+        <span id="theme-icon">🌙</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <div class="hero-inner">
+      <span class="hero-label">Zero-to-Hero Guide</span>
+      <h1>Build apps with AI.<br>No experience needed.</h1>
+      <p class="hero-sub">
+        Antigravity is an AI code editor that writes software for you in natural language.
+        Multigravity lets you manage separate workspaces for each project.
+        This guide gets you from zero to running in 5 minutes.
+      </p>
+      <a href="#setup" class="hero-cta">Start Setup Walkthrough →</a>
+    </div>
+  </div>
+
+  <!-- What is this? -->
+  <section class="gray-bg">
+    <span class="section-label">Before we begin</span>
+    <h2 class="section-title">What are these tools?</h2>
+    <p class="section-sub">
+      If you're hearing terms like "IDE", "terminal", and "profiles" for the first time, here's what they mean in plain English.
+    </p>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <h3>Antigravity</h3>
+        <p>A smart notepad for code. You describe what you want to build in plain English, and the AI writes the code. You don't need prior programming experience.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📁</div>
+        <h3>Profile / Workspace</h3>
+        <p>Like user accounts on your smartphone. Each one has its own login, settings, and projects — completely isolated from the others.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚀</div>
+        <h3>Multigravity</h3>
+        <p>A tool that creates and switches between workspaces. Instead of logging in and out constantly, you run one short command and a separate window opens.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Interactive Terminal Demo -->
+  <div class="demo-section" id="demo">
+    <div class="demo-inner">
+      <span class="section-label">Live Preview</span>
+      <h2 class="section-title">Watch how it works</h2>
+      <p class="section-sub">This animated simulator types real commands and shows exactly what you'll see in your terminal.</p>
+
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="terminal-dot dot-red"></div>
+          <div class="terminal-dot dot-yellow"></div>
+          <div class="terminal-dot dot-green"></div>
+          <span class="terminal-title">Terminal Walkthrough</span>
+        </div>
+        <div class="terminal-body" id="terminalBody">
+          <span class="terminal-cursor" id="cursor"></span>
+        </div>
+      </div>
+
+      <div class="demo-steps" id="demoSteps">
+        <div class="demo-step-pill" data-step="0">1. Install</div>
+        <div class="demo-step-pill" data-step="1">2. Health Check</div>
+        <div class="demo-step-pill" data-step="2">3. Create Profile</div>
+        <div class="demo-step-pill" data-step="3">4. Launch</div>
+      </div>
+
+      <div class="demo-narration" id="demoNarration">Click play to start the walkthrough</div>
+
+      <div class="demo-controls">
+        <button class="demo-btn primary" id="demoPlayBtn" onclick="startDemo()">Play Walkthrough</button>
+        <button class="demo-btn" id="demoRestartBtn" onclick="restartDemo()" style="display:none;">Replay</button>
+        <button class="demo-btn" id="demoDownloadBtn" onclick="downloadVideo()">Download as Video</button>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Step-by-Step Setup Guide -->
+  <section id="setup">
+    <span class="section-label">Interactive Stepper</span>
+    <h2 class="section-title">Step-by-Step Setup Guide</h2>
+    <p class="section-sub">Follow each step in order. Each one explains what to do, where to click, and what to verify.</p>
+
+    <div class="step-list">
+
+      <!-- Step 0 -->
+      <div class="step">
+        <div class="step-num">0</div>
+        <div class="step-body">
+          <div class="step-title">Make sure Antigravity is installed</div>
+          <p class="step-text">
+            You need the Antigravity IDE on your computer before using Multigravity.
+            If you already have it installed, skip to Step 1.
+            If not, download it from the official Antigravity website and install it like any regular software.
+          </p>
+          <div class="step-note">
+            <strong>How to verify:</strong> Look in your Applications folder (macOS), Start Menu (Windows), or type <code>which antigravity</code> in your terminal (Linux). If found, you are ready to proceed.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 1 -->
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Open your terminal</div>
+          <p class="step-text">
+            A <span class="jargon">terminal<span class="jargon-tip">A text window where you type instructions to your computer. Don't worry — you cannot break anything running the commands here.</span></span> is a text window where you type instructions to your machine.
+          </p>
+
+          <div class="os-tabs" id="osTabsTerminal">
+            <button class="os-tab active" onclick="switchOS('mac', 'terminal')">🍎 Mac</button>
+            <button class="os-tab" onclick="switchOS('windows', 'terminal')">🪟 Windows</button>
+            <button class="os-tab" onclick="switchOS('linux', 'terminal')">🐧 Linux</button>
+          </div>
+
+          <div class="os-content active" id="terminal-mac">
+            <p class="step-text">Press <kbd>Command ⌘</kbd> + <kbd>Space</kbd>, type <code>Terminal</code>, and press <kbd>Enter</kbd>.</p>
+          </div>
+
+          <div class="os-content" id="terminal-windows">
+            <p class="step-text">Press the <kbd>Windows Key</kbd>, type <code>PowerShell</code>, and press <kbd>Enter</kbd>.</p>
+          </div>
+
+          <div class="os-content" id="terminal-linux">
+            <p class="step-text">Press <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd> or search for "Terminal" in your application menu.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Install Multigravity</div>
+          <p class="step-text">Copy the single installation command below, paste it into your terminal, and press <kbd>Enter</kbd>:</p>
+
+          <div class="os-tabs" id="osTabsInstall">
+            <button class="os-tab active" onclick="switchOS('mac', 'install')">🍎 macOS / Linux</button>
+            <button class="os-tab" onclick="switchOS('windows', 'install')">🪟 Windows</button>
+          </div>
+
+          <div class="os-content active" id="install-mac">
+            <div class="code-block">
+              <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/shubashbiswas/multigravity-pro/main/install.sh)"</code></pre>
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+          </div>
+
+          <div class="os-content" id="install-windows">
+            <div class="code-block">
+              <pre><code>irm https://raw.githubusercontent.com/shubashbiswas/multigravity-pro/main/install.ps1 | iex</code></pre>
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+          </div>
+
+          <div class="step-note">
+            <strong>Check health:</strong> Once installed, verify everything by running:
+            <div class="code-block" style="margin-top: 8px;">
+              <pre><code>multigravity doctor</code></pre>
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Create your first workspace & launch</div>
+          <p class="step-text">Create a named profile (e.g. <code>work</code>) and launch it:</p>
+
+          <div class="code-block">
+            <pre><code># Create the workspace
+multigravity new work
+
+# Launch the workspace
+multigravity work</code></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+
+          <div class="step-note">
+            <strong>🎉 That's it!</strong> Antigravity opens in its own window. Anything you do inside this window (accounts, extensions, settings) stays completely separate from other profiles.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Success Complete Banner -->
+  <div class="success-section">
+    <div style="max-width: 800px; margin: 0 auto;">
+      <h2 class="section-title">Setup Complete!</h2>
+      <p style="color: var(--text-muted); font-size: 1.05em; margin-bottom: 12px;">Here is what you just accomplished:</p>
+      <ul class="success-list">
+        <li><span class="check">&#10003;</span> Installed Multigravity on your machine</li>
+        <li><span class="check">&#10003;</span> Verified your environment with doctor</li>
+        <li><span class="check">&#10003;</span> Created your first isolated workspace</li>
+        <li><span class="check">&#10003;</span> Launched Antigravity in an independent session</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- What you can do next -->
+  <section>
+    <span class="section-label">Next Steps</span>
+    <h2 class="section-title">What you can do now</h2>
+    <p class="section-sub">Single-line commands you can type anytime in your terminal:</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <h4>More Workspaces</h4>
+        <p>Run <code>multigravity new second-project</code> to create another workspace. No limits.</p>
+      </div>
+      <div class="feature-card">
+        <h4>List Workspaces</h4>
+        <p>Run <code>multigravity list</code> to see every workspace you've configured.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Check Status</h4>
+        <p>Run <code>multigravity status</code> to see running instances, last used times, and disk footprints.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Save as Template</h4>
+        <p>Run <code>multigravity template save work my-tpl</code> to reuse a perfected environment.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Auth-Only Workspace</h4>
+        <p>Run <code>multigravity new client --auth-only</code> for a lightweight 2 MB profile with shared settings.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Export & Back up</h4>
+        <p>Run <code>multigravity export work</code> to save a workspace archive to a portable file.</p>
+      </div>
+    </div>
+
+    <p style="margin-top: 36px; text-align: center;">
+      <a href="index.html" class="hero-cta" style="padding: 10px 24px;">Explore Full Developer Docs & Commands &rarr;</a>
+    </p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- FAQ -->
+  <section id="faq">
+    <span class="section-label">Questions & Answers</span>
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="section-sub">Written specifically for newcomers and non-developers.</p>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Do I need to know how to code?<span class="faq-arrow">&#9660;</span></button>
+      <div class="faq-a">
+        <strong>No.</strong> Antigravity is AI-powered — you describe what you want in plain English and the AI writes code for you. Multigravity just organizes separate workspace profiles. The only command-line tasks are short commands like <code>multigravity new work</code>.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What is "vibe coding"?<span class="faq-arrow">&#9660;</span></button>
+      <div class="faq-a">
+        Building applications by describing your vision in natural human language instead of programming manually. You say "create a habit tracker app with a dark theme", and the AI produces the software.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Is the terminal dangerous? Can I break my computer?<span class="faq-arrow">&#9660;</span></button>
+      <div class="faq-a">
+        The terminal is simply a command console. You cannot damage your operating system running the commands provided on this page. If you make a typo, nothing breaks — simply retype the command.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Is this software free?<span class="faq-arrow">&#9660;</span></button>
+      <div class="faq-a">
+        Multigravity Pro is 100% free and open-source under the MIT license. Antigravity IDE has a generous free tier alongside professional plans.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What is the difference between "full" and "auth-only" profiles?<span class="faq-arrow">&#9660;</span></button>
+      <div class="faq-a">
+        A <strong>full profile</strong> creates a separate directory with its own independent extensions, settings, and accounts (~500 MB).<br><br>
+        An <strong>auth-only profile</strong> symlinks your existing extensions and settings while keeping only the login account separate (~2 MB). Use this when you only need separate Google/GitHub accounts.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">I got an error. What do I do?<span class="faq-arrow">&#9660;</span></button>
+      <div class="faq-a">
+        Run <code>multigravity doctor</code> first — it diagnoses your setup and tells you exactly what is missing.<br><br>
+        <strong>"command not found"</strong> — Close your terminal window and open a fresh one so your system reloads your PATH.<br><br>
+        <strong>"Antigravity not found"</strong> — Install the Antigravity IDE from the official website first.
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Glossary -->
+  <section>
+    <span class="section-label">Plain Language Reference</span>
+    <h2 class="section-title">Glossary</h2>
+    <p class="section-sub">Technical terms you might see, explained in plain language.</p>
+
+    <table class="glossary">
+      <tr>
+        <td>Terminal</td>
+        <td>A text-based console where you type commands. On Mac/Linux it's called "Terminal", on Windows it's "PowerShell".</td>
+      </tr>
+      <tr>
+        <td>IDE</td>
+        <td>"Integrated Development Environment" — a code editor. Think of it as Microsoft Word or Google Docs, but built for code.</td>
+      </tr>
+      <tr>
+        <td>Profile</td>
+        <td>A separate, isolated space with its own login, extensions, and settings.</td>
+      </tr>
+      <tr>
+        <td>Extension</td>
+        <td>An add-on that gives your editor extra abilities, like apps on your smartphone.</td>
+      </tr>
+      <tr>
+        <td>Auth-Only</td>
+        <td>A lightweight profile that isolates logins while sharing extensions via symlinks (~2 MB).</td>
+      </tr>
+      <tr>
+        <td>Template</td>
+        <td>A saved blueprint of an environment used to stamp out fresh workspaces.</td>
+      </tr>
+      <tr>
+        <td>PATH</td>
+        <td>A list of folders your operating system checks when looking up commands.</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- Community / Connect -->
+  <div style="border-top: 1px solid var(--border-subtle); background: var(--bg-card); padding: 64px clamp(20px, 4vw, 56px); width: 100%; box-sizing: border-box;">
+    <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+      <span class="section-label">Community & Feedback</span>
+      <h2 class="section-title">Get help, share feedback, stay updated</h2>
+      <p style="color: var(--text-muted); font-size: 1.05em; line-height: 1.6; margin-bottom: 32px;">
+        Stuck on something? Want to request a feature? Connect with us on GitHub or Twitter/X.
+      </p>
+
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px;">
+        <a href="https://github.com/shubashbiswas/multigravity-pro" target="_blank" rel="noopener" class="hero-cta" style="padding: 10px 24px;">GitHub Repository</a>
+        <a href="https://x.com/Psudokit" target="_blank" rel="noopener" class="demo-btn" style="padding: 10px 24px; text-decoration: none;">Follow on X / Twitter</a>
+      </div>
+
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="https://github.com/shubashbiswas/multigravity-pro/issues" target="_blank" rel="noopener">Report an Issue</a>
+        <span>•</span>
+        <a href="https://github.com/shubashbiswas/multigravity-pro/discussions" target="_blank" rel="noopener">Ask a Question</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-links">
+      <a href="index.html">Developer Docs</a>
+      <a href="https://github.com/shubashbiswas/multigravity-pro">GitHub</a>
+      <a href="https://x.com/Psudokit">X / Twitter</a>
+      <a href="https://github.com/shubashbiswas/multigravity-pro/issues">Get Help</a>
+    </div>
+    <p class="footer-credit">
+      Multigravity Pro — built on <a href="https://github.com/sujitagarwal/multigravity-cli">multigravity-cli</a> by Sujit Agarwal. MIT License.
+    </p>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // ===== Copy Code =====
+    function copyCode(btn) {
+      var codeEl = btn.previousElementSibling
+        ? btn.previousElementSibling.querySelector('code') || btn.parentElement.querySelector('code')
+        : btn.parentElement.querySelector('code');
+      if (!codeEl) codeEl = btn.parentElement.querySelector('code');
+      navigator.clipboard.writeText(codeEl.innerText).then(function () {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(function () { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+
+    // ===== OS Switcher =====
+    function switchOS(os, group) {
+      var tabsId = 'osTabs' + group.charAt(0).toUpperCase() + group.slice(1);
+      var tabs = document.getElementById(tabsId);
+      if (!tabs) return;
+      tabs.querySelectorAll('.os-tab').forEach(function (t) { t.classList.remove('active'); });
+      var map = { mac: 0, windows: 1, linux: 2 };
+      var idx = map[os];
+      if (idx !== undefined && tabs.children[idx]) tabs.children[idx].classList.add('active');
+      document.querySelectorAll('[id^="' + group + '-"]').forEach(function (el) { el.classList.remove('active'); });
+      var target = document.getElementById(group + '-' + os);
+      if (target) target.classList.add('active');
+    }
+
+    // ===== FAQ Toggle =====
+    function toggleFaq(btn) {
+      var item = btn.parentElement;
+      var wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function (el) { el.classList.remove('open'); });
+      if (!wasOpen) item.classList.add('open');
+    }
+
+    // ===== Theme Switcher =====
+    const themeBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+
+    function initTheme() {
+      const saved = localStorage.getItem('multigravity_theme');
+      if (saved === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        if (themeIcon) themeIcon.textContent = '☀️';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        if (themeIcon) themeIcon.textContent = '🌙';
+      }
+    }
+
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        if (current === 'light') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('multigravity_theme', 'dark');
+          if (themeIcon) themeIcon.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+          localStorage.setItem('multigravity_theme', 'light');
+          if (themeIcon) themeIcon.textContent = '☀️';
+        }
+      });
+    }
+
+    initTheme();
+
+    // ===== Live Terminal Walkthrough Demo =====
+    var demoSeq = [
+      {
+        step: 0,
+        narration: "Installing Multigravity with a single command...",
+        command: "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/shubashbiswas/multigravity-pro/main/install.sh)\"",
+        output: [
+          { text: "", type: "output" },
+          { text: "  Downloading multigravity...", type: "output" },
+          { text: "  Installing to /usr/local/bin/multigravity...", type: "output" },
+          { text: "", type: "output" },
+          { text: "  ✓  multigravity installed successfully", type: "success" },
+          { text: "", type: "output" }
+        ],
+        pause: 1600
+      },
+      {
+        step: 1,
+        narration: "Running doctor to diagnose environment health...",
+        command: "multigravity doctor",
+        output: [
+          { text: "", type: "output" },
+          { text: "  Checking environment...", type: "output" },
+          { text: "", type: "output" },
+          { text: "  ✓  Antigravity IDE found", type: "success" },
+          { text: "  ✓  Profile directory ready", type: "success" },
+          { text: "  ✓  Shell completion ready", type: "success" },
+          { text: "  ✓  All checks passed", type: "success" },
+          { text: "", type: "output" }
+        ],
+        pause: 1600
+      },
+      {
+        step: 2,
+        narration: "Creating a fresh workspace named \"work\"...",
+        command: "multigravity new work",
+        output: [
+          { text: "", type: "output" },
+          { text: "  ✓  Created profile \"work\"", type: "success" },
+          { text: "  ✓  Desktop launcher registered", type: "success" },
+          { text: "", type: "output" },
+          { text: "  Ready! Launch with: multigravity work", type: "info" },
+          { text: "", type: "output" }
+        ],
+        pause: 1600
+      },
+      {
+        step: 3,
+        narration: "Launching Antigravity with your isolated profile...",
+        command: "multigravity work",
+        output: [
+          { text: "", type: "output" },
+          { text: "  Opening Antigravity with profile \"work\"...", type: "info" },
+          { text: "", type: "output" },
+          { text: "  Antigravity is running in an isolated window.", type: "success" },
+          { text: "", type: "output" }
+        ],
+        pause: 2000
+      }
+    ];
+
+    var demoRunning = false;
+    var demoTimeout = null;
+
+    function startDemo() {
+      if (demoRunning) return;
+      demoRunning = true;
+      document.getElementById('demoPlayBtn').style.display = 'none';
+      document.getElementById('demoRestartBtn').style.display = 'none';
+      document.getElementById('terminalBody').innerHTML = '';
+      document.querySelectorAll('.demo-step-pill').forEach(function (el) { el.classList.remove('active', 'done'); });
+      runStep(0);
+    }
+
+    function runStep(i) {
+      if (i >= demoSeq.length) {
+        demoRunning = false;
+        document.getElementById('demoNarration').textContent = "Done! Four simple commands from setup to launch. You are ready to build.";
+        document.getElementById('demoRestartBtn').style.display = 'inline-block';
+        return;
+      }
+      var s = demoSeq[i];
+      document.querySelectorAll('.demo-step-pill').forEach(function (el, idx) {
+        el.classList.remove('active');
+        if (idx < i) el.classList.add('done');
+        if (idx === i) el.classList.add('active');
+      });
+      document.getElementById('demoNarration').textContent = s.narration;
+      typeCmd(s.command, function () {
+        showLines(s.output, 0, function () {
+          var pill = document.querySelector('.demo-step-pill[data-step="' + i + '"]');
+          if (pill) { pill.classList.remove('active'); pill.classList.add('done'); }
+          demoTimeout = setTimeout(function () { runStep(i + 1); }, s.pause);
+        });
+      });
+    }
+
+    function typeCmd(cmd, cb) {
+      var body = document.getElementById('terminalBody');
+      var line = document.createElement('div');
+      line.className = 'terminal-line';
+      var prompt = document.createElement('span');
+      prompt.className = 'terminal-prompt';
+      prompt.textContent = '$ ';
+      line.appendChild(prompt);
+      var span = document.createElement('span');
+      span.className = 'terminal-command';
+      line.appendChild(span);
+      var cur = document.createElement('span');
+      cur.className = 'terminal-cursor';
+      line.appendChild(cur);
+      body.appendChild(line);
+      body.scrollTop = body.scrollHeight;
+      var idx = 0;
+      var iv = setInterval(function () {
+        if (idx < cmd.length) {
+          span.textContent += cmd[idx++];
+          body.scrollTop = body.scrollHeight;
+        } else {
+          clearInterval(iv);
+          if (cur.parentNode) cur.parentNode.removeChild(cur);
+          demoTimeout = setTimeout(cb, 400);
+        }
+      }, 50);
+    }
+
+    function showLines(lines, i, cb) {
+      if (i >= lines.length) { cb(); return; }
+      var body = document.getElementById('terminalBody');
+      var d = document.createElement('div');
+      d.className = 'terminal-line';
+      var sp = document.createElement('span');
+      sp.className = 'terminal-' + lines[i].type;
+      sp.textContent = lines[i].text;
+      d.appendChild(sp);
+      body.appendChild(d);
+      body.scrollTop = body.scrollHeight;
+      demoTimeout = setTimeout(function () { showLines(lines, i + 1, cb); }, lines[i].text ? 140 : 40);
+    }
+
+    function restartDemo() {
+      if (demoTimeout) clearTimeout(demoTimeout);
+      demoRunning = false;
+      document.getElementById('demoRestartBtn').style.display = 'none';
+      startDemo();
+    }
+
+    // ===== Canvas Video Recording =====
+    function downloadVideo() {
+      var btn = document.getElementById('demoDownloadBtn');
+      btn.disabled = true;
+      btn.textContent = 'Recording...';
+
+      var W = 800, H = 420;
+      var canvas = document.createElement('canvas');
+      canvas.width = W;
+      canvas.height = H;
+      var ctx = canvas.getContext('2d');
+
+      if (typeof MediaRecorder === 'undefined') {
+        alert('Video recording is not supported in this browser. Please use Chrome or Edge.');
+        btn.disabled = false;
+        btn.textContent = 'Download as Video';
+        return;
+      }
+
+      var candidates = [
+        { mime: 'video/mp4;codecs=avc1', ext: 'mp4', blobType: 'video/mp4' },
+        { mime: 'video/mp4', ext: 'mp4', blobType: 'video/mp4' },
+        { mime: 'video/webm;codecs=vp9', ext: 'webm', blobType: 'video/webm' },
+        { mime: 'video/webm;codecs=vp8', ext: 'webm', blobType: 'video/webm' },
+        { mime: 'video/webm', ext: 'webm', blobType: 'video/webm' }
+      ];
+      var chosen = null;
+      for (var c = 0; c < candidates.length; c++) {
+        if (MediaRecorder.isTypeSupported(candidates[c].mime)) {
+          chosen = candidates[c];
+          break;
+        }
+      }
+      if (!chosen) {
+        alert('Video recording is not supported in this browser.');
+        btn.disabled = false;
+        btn.textContent = 'Download as Video';
+        return;
+      }
+
+      var stream = canvas.captureStream(30);
+      var recorder = new MediaRecorder(stream, { mimeType: chosen.mime });
+      var chunks = [];
+      recorder.ondataavailable = function (e) { if (e.data.size > 0) chunks.push(e.data); };
+      recorder.onstop = function () {
+        var blob = new Blob(chunks, { type: chosen.blobType });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'multigravity-walkthrough.' + chosen.ext;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+        btn.disabled = false;
+        btn.textContent = 'Download as Video';
+      };
+
+      var events = [];
+      var t = 600;
+      events.push({ time: 0, action: 'title' });
+
+      demoSeq.forEach(function (step) {
+        var cmd = step.command;
+        for (var c = 0; c < cmd.length; c++) {
+          events.push({ time: t, action: 'type', char: cmd[c] });
+          t += 50;
+        }
+        events.push({ time: t, action: 'enter' });
+        t += 350;
+        step.output.forEach(function (line) {
+          events.push({ time: t, action: 'output', text: line.text, type: line.type });
+          t += (line.text ? 140 : 40);
+        });
+        t += step.pause;
+      });
+
+      events.push({ time: t, action: 'end' });
+      var totalDuration = t + 1500;
+
+      var displayLines = [];
+      var currentCmd = '';
+      var isTyping = false;
+      var eventIdx = 0;
+      var startTime = null;
+      var showTitle = true;
+
+      var font = '14px "JetBrains Mono", Menlo, Consolas, monospace';
+      var headerH = 38;
+      var padX = 20;
+      var padY = 16;
+      var lineH = 22;
+
+      recorder.start();
+
+      function renderFrame(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var elapsed = timestamp - startTime;
+
+        while (eventIdx < events.length && events[eventIdx].time <= elapsed) {
+          var ev = events[eventIdx];
+          if (ev.action === 'title') {
+            showTitle = true;
+          } else if (ev.action === 'type') {
+            showTitle = false;
+            isTyping = true;
+            currentCmd += ev.char;
+          } else if (ev.action === 'enter') {
+            isTyping = false;
+            displayLines.push({
+              segments: [
+                { text: '$ ', color: '#34d399' },
+                { text: currentCmd, color: '#f8fafc' }
+              ]
+            });
+            currentCmd = '';
+          } else if (ev.action === 'output') {
+            var color = '#94a3b8';
+            if (ev.type === 'success') color = '#34d399';
+            if (ev.type === 'info') color = '#38bdf8';
+            displayLines.push({ segments: [{ text: ev.text, color: color }] });
+          }
+          eventIdx++;
+        }
+
+        ctx.fillStyle = '#06090e';
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.fillStyle = '#0d131f';
+        ctx.fillRect(0, 0, W, headerH);
+
+        var dots = ['#ef4444', '#f59e0b', '#10b981'];
+        [18, 34, 50].forEach(function (x, i) {
+          ctx.beginPath();
+          ctx.arc(x, headerH / 2, 5, 0, Math.PI * 2);
+          ctx.fillStyle = dots[i];
+          ctx.fill();
+        });
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = '12px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('Multigravity Terminal', W / 2, headerH / 2 + 4);
+        ctx.textAlign = 'left';
+
+        if (showTitle && displayLines.length === 0 && !currentCmd) {
+          ctx.fillStyle = '#f8fafc';
+          ctx.font = 'bold 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Multigravity Pro', W / 2, H / 2 - 16);
+          ctx.fillStyle = '#94a3b8';
+          ctx.font = '14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+          ctx.fillText('Beginner Setup Walkthrough', W / 2, H / 2 + 14);
+          ctx.textAlign = 'left';
+        } else {
+          ctx.font = font;
+          var y = headerH + padY + lineH;
+
+          displayLines.forEach(function (line) {
+            var x = padX;
+            line.segments.forEach(function (seg) {
+              ctx.fillStyle = seg.color;
+              ctx.fillText(seg.text, x, y);
+              x += ctx.measureText(seg.text).width;
+            });
+            y += lineH;
+          });
+
+          if (isTyping || currentCmd) {
+            var x = padX;
+            ctx.fillStyle = '#34d399';
+            ctx.fillText('$ ', x, y);
+            x += ctx.measureText('$ ').width;
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillText(currentCmd, x, y);
+            x += ctx.measureText(currentCmd).width;
+
+            if (Math.floor(elapsed / 500) % 2 === 0) {
+              ctx.fillStyle = '#f8fafc';
+              ctx.fillRect(x + 1, y - 13, 8, 16);
+            }
+          }
+        }
+
+        if (elapsed < totalDuration) {
+          requestAnimationFrame(renderFrame);
+        } else {
+          recorder.stop();
+        }
+      }
+
+      requestAnimationFrame(renderFrame);
+    }
+
+    // Auto-play when visible
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !demoRunning) {
+          setTimeout(function () { if (!demoRunning) startDemo(); }, 600);
+          obs.disconnect();
+        }
+      });
+    }, { threshold: 0.4 });
+    var tw = document.querySelector('.terminal-window');
+    if (tw) obs.observe(tw);
+  </script>
+</body>
+
+</html>
